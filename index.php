@@ -39,7 +39,7 @@ include "db_conn.php";
     <table class="table table-hover text-center">
       <thead class="table-dark">
         <tr>
-          <th scope="col">ID</th>
+          <th scope="col">Employee ID</th>
           <th scope="col">First Name</th>
           <th scope="col">Last Name</th>
           <th scope="col">Position</th>
@@ -68,7 +68,7 @@ include "db_conn.php";
       </tbody>
     </table>
   </div>
-
+  <br>
   <div class="container">
     <?php
     if (isset($_GET["store_msg"])) {
@@ -84,7 +84,7 @@ include "db_conn.php";
     <table class="table table-hover text-center">
       <thead class="table-dark">
         <tr>
-          <th scope="col">STORE ID</th>
+          <th scope="col">Store ID</th>
           <th scope="col">Location Name</th>
           <th scope="col">Action</th>
         </tr>
@@ -109,7 +109,7 @@ include "db_conn.php";
       </tbody>
     </table>
   </div>
-
+  <br>
   <div class="container">
     <?php
     if (isset($_GET["inventory_item_msg"])) {
@@ -125,7 +125,7 @@ include "db_conn.php";
     <table class="table table-hover text-center">
       <thead class="table-dark">
         <tr>
-          <th scope="col">ITEM ID</th>
+          <th scope="col">Item ID</th>
           <th scope="col">Item Name</th>
           <th scope="col">Unit</th>
           <th scope="col">Action</th>
