@@ -30,3 +30,5 @@ create TABLE INVENTORY_ITEM (
 
 ### ****Copy files to htdocs folder****
 
+mango
+
