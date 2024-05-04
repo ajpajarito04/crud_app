@@ -26,6 +26,10 @@ create TABLE INVENTORY_ITEM (
     PRIMARY KEY (`ITEM_ID`)
 );
 
+git status
+
+git config pull.rebase false
+
 ```
 
 ### ****Copy files to htdocs folder****
