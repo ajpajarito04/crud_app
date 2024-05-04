@@ -19,6 +19,13 @@ create TABLE STORE_LOCATION (
     PRIMARY KEY (`STORE_ID`)
 );
 
+create TABLE INVENTORY_ITEM (
+    `ITEM_ID` int(1) NOT NULL AUTO_INCREMENT,
+    `ITEM_NAME` VARCHAR(10) NOT NULL,
+    `UNIT` int(2) NOT NULL,
+    PRIMARY KEY (`ITEM_ID`)
+);
+
 ```
 
 ### ****Copy files to htdocs folder****

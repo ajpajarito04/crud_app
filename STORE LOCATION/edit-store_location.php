@@ -1,18 +1,29 @@
 <?php
-include "db_conn.php";
+include "../db_conn.php";
 $id = $_GET["id"];
 
+$LOC_NAME = '';
+
 if (isset($_POST["submit"])) {
+  $id = $_GET["id"]; 
   $LOC_NAME = $_POST['LOC_NAME'];
 
-  $sql = "UPDATE STORE_LOCATION SET `LOC_NAME`='$LOC_NAME' WHERE STORE_ID = $id";
+  $check_sql = "SELECT * FROM STORE_LOCATION WHERE LOC_NAME = '$LOC_NAME' AND STORE_ID != '$id'";
+  $check_result = mysqli_query($conn, $check_sql);
 
-  $result = mysqli_query($conn, $sql);
-
-  if ($result) {
-    header("Location: index-store_location.php?msg=Data updated successfully");
+  if (mysqli_num_rows($check_result) > 0) {
+      header("Location: ../index.php?store_msg=Store Location already exists");
+      exit();
   } else {
-    echo "Failed: " . mysqli_error($conn);
+      $update_sql = "UPDATE STORE_LOCATION SET LOC_NAME = '$LOC_NAME' WHERE STORE_ID = '$id'";
+      $update_result = mysqli_query($conn, $update_sql);
+
+      if ($update_result) {
+          header("Location: ../index.php?store_msg=Store Location record updated successfully");
+          exit();
+      } else {
+          echo "Failed to update record: " . mysqli_error($conn);
+      }
   }
 }
 
@@ -39,14 +50,14 @@ if (isset($_POST["submit"])) {
 </head>
 
 <body>
-  <nav class="navbar navbar-light justify-content-center fs-3 mb-5" style="background-color: #00ff5573;">
-    Big Brew CRUD Application (Employee)
+  <nav class="navbar navbar-light; justify-content-center fs-3 mb-5" style="background-color: #39393f">
+    <img src="../images/logo.png" width=150 height=130><p style="color: white; margin-left: 10px">Big Brew CRUD Application (Store Location)</p>
   </nav>
 
   <div class="container">
     <div class="text-center mb-4">
       <h3>Edit Store Location</h3>
-      <p class="text-muted">Click update after changing any location</p>
+      <p class="text-muted">Click update after changing any information</p>
     </div>
 
     <?php
@@ -65,7 +76,7 @@ if (isset($_POST["submit"])) {
 
         <div>
           <button type="submit" class="btn btn-success" name="submit">Update</button>
-          <a href="index-store_location.php" class="btn btn-danger">Cancel</a>
+          <a href="../index.php" class="btn btn-danger">Cancel</a>
         </div>
       </form>
     </div>

@@ -1,5 +1,5 @@
 <?php
-include "db_conn.php";
+include "../db_conn.php";
 
 $sql_reset_auto_increment = "ALTER TABLE EMPLOYEE AUTO_INCREMENT = 1";
 mysqli_query($conn, $sql_reset_auto_increment);
@@ -9,15 +9,22 @@ if (isset($_POST["submit"])) {
    $L_NAME = $_POST['L_NAME'];
    $POSITION = $_POST['POSITION']; 
 
-   $sql = "INSERT INTO EMPLOYEE (`EMPLOYEE_ID`, `F_NAME`, `L_NAME`, `POSITION`) VALUES (NULL,'$F_NAME', '$L_NAME', '$POSITION')";
+   $check_sql = "SELECT * FROM EMPLOYEE WHERE F_NAME = '$F_NAME' AND L_NAME = '$L_NAME' AND POSITION = '$POSITION'";
+   $check_result = mysqli_query($conn, $check_sql);
 
-   $result = mysqli_query($conn, $sql);
-
-   if ($result) {
-      header("Location: index-employee.php?msg=New record created successfully");
+   if (mysqli_num_rows($check_result) > 0) {
+      header("Location: ../index.php?employee_msg=Employee already exists");
       exit();
    } else {
-      echo "Failed: " . mysqli_error($conn);
+      $sql = "INSERT INTO EMPLOYEE (`EMPLOYEE_ID`, `F_NAME`, `L_NAME`, `POSITION`) VALUES (NULL,'$F_NAME', '$L_NAME', '$POSITION')";
+      $result = mysqli_query($conn, $sql);
+
+      if ($result) {
+         header("Location: ../index.php?employee_msg=New Employee record created successfully");
+         exit();
+      } else {
+         echo "Failed: " . mysqli_error($conn);
+      }
    }
 }
 ?>
@@ -43,14 +50,14 @@ if (isset($_POST["submit"])) {
 </head>
 
 <body>
-   <nav class="navbar navbar-light justify-content-center fs-3 mb-5" style="background-color: #00ff5573;">
-      Big Brew CRUD Application (Employee)
-   </nav>
+   <nav class="navbar navbar-light; justify-content-center fs-3 mb-5" style="background-color: #39393f">
+    <img src="../images/logo.png" width=150 height=130><p style="color: white; margin-left: 10px">Big Brew CRUD Application (Employee)</p>
+  </nav>
 
    <div class="container">
       <div class="text-center mb-4">
-         <h3>Add New User</h3>
-         <p class="text-muted">Complete the form below to add a new user</p>
+         <h3>Add New Employee</h3>
+         <p class="text-muted">Complete the form below to add a new employee</p>
       </div>
 
       <div class="container d-flex justify-content-center">
@@ -75,7 +82,7 @@ if (isset($_POST["submit"])) {
 
             <div>
                <button type="submit" class="btn btn-success" name="submit">Save</button>
-               <a href="index-employee.php" class="btn btn-danger">Cancel</a>
+               <a href="../index.php" class="btn btn-danger">Cancel</a>
             </div>
          </form>
       </div>

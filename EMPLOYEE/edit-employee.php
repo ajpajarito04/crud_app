@@ -1,20 +1,33 @@
 <?php
-include "db_conn.php";
+include "../db_conn.php";
 $id = $_GET["id"];
 
+$F_NAME = '';
+$L_NAME = '';
+$POSITION = '';
+
 if (isset($_POST["submit"])) {
+  $id = $_GET["id"];
   $F_NAME = $_POST['F_NAME'];
   $L_NAME = $_POST['L_NAME'];
   $POSITION = $_POST['POSITION'];
 
-  $sql = "UPDATE EMPLOYEE SET `F_NAME`='$F_NAME',`L_NAME`='$L_NAME',`POSITION`='$POSITION' WHERE EMPLOYEE_ID = $id";
+  $check_sql = "SELECT * FROM EMPLOYEE WHERE F_NAME = '$F_NAME' AND L_NAME = '$L_NAME' AND POSITION = '$POSITION' AND EMPLOYEE_ID != '$id'";
+  $check_result = mysqli_query($conn, $check_sql);
 
-  $result = mysqli_query($conn, $sql);
-
-  if ($result) {
-    header("Location: index-employee.php?msg=Data updated successfully");
+  if (mysqli_num_rows($check_result) > 0) {
+      header("Location: ../index.php?employee_msg=Employee already exists");
+      exit();
   } else {
-    echo "Failed: " . mysqli_error($conn);
+      $update_sql = "UPDATE EMPLOYEE SET F_NAME = '$F_NAME', L_NAME = '$L_NAME', POSITION = '$POSITION' WHERE EMPLOYEE_ID = '$id'";
+      $update_result = mysqli_query($conn, $update_sql);
+
+      if ($update_result) {
+          header("Location: ../index.php?employee_msg=Employee record updated successfully");
+          exit();
+      } else {
+          echo "Failed to update record: " . mysqli_error($conn);
+      }
   }
 }
 
@@ -41,13 +54,13 @@ if (isset($_POST["submit"])) {
 </head>
 
 <body>
-  <nav class="navbar navbar-light justify-content-center fs-3 mb-5" style="background-color: #00ff5573;">
-    Big Brew CRUD Application (Employee)
+  <nav class="navbar navbar-light; justify-content-center fs-3 mb-5" style="background-color: #39393f">
+    <img src="../images/logo.png" width=150 height=130><p style="color: white; margin-left: 10px">Big Brew CRUD Application EMPLOYEE</p>
   </nav>
 
   <div class="container">
     <div class="text-center mb-4">
-      <h3>Edit User Information</h3>
+      <h3>Edit Employee Information</h3>
       <p class="text-muted">Click update after changing any information</p>
     </div>
 
@@ -78,7 +91,7 @@ if (isset($_POST["submit"])) {
 
         <div>
           <button type="submit" class="btn btn-success" name="submit">Update</button>
-          <a href="index-employee.php" class="btn btn-danger">Cancel</a>
+          <a href="../index.php" class="btn btn-danger">Cancel</a>
         </div>
       </form>
     </div>

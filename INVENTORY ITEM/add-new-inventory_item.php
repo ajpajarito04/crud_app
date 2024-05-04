@@ -1,24 +1,25 @@
 <?php
 include "../db_conn.php";
 
-$sql_reset_auto_increment = "ALTER TABLE STORE_LOCATION AUTO_INCREMENT = 1";
+$sql_reset_auto_increment = "ALTER TABLE INVENTORY_ITEM AUTO_INCREMENT = 1";
 mysqli_query($conn, $sql_reset_auto_increment);
 
 if (isset($_POST["submit"])) {
-   $LOC_NAME = $_POST['LOC_NAME'];
+   $ITEM_NAME = $_POST['ITEM_NAME'];
+   $UNIT = $_POST['UNIT'];
 
-   $check_sql = "SELECT * FROM STORE_LOCATION WHERE LOC_NAME = '$LOC_NAME'";
+   $check_sql = "SELECT * FROM INVENTORY_ITEM WHERE ITEM_NAME = '$ITEM_NAME' AND UNIT = '$UNIT'";
    $check_result = mysqli_query($conn, $check_sql);
 
    if (mysqli_num_rows($check_result) > 0) {
-      header("Location: ../index.php?store_msg=Store Location already exists");
+      header("Location: ../index.php?inventory_item_msg=Inventory Item already exists");
       exit();
    } else {
-      $sql = "INSERT INTO STORE_LOCATION (`STORE_ID`, `LOC_NAME`) VALUES (NULL,'$LOC_NAME')";
+      $sql = "INSERT INTO INVENTORY_ITEM (`ITEM_ID`, `ITEM_NAME`, `UNIT`) VALUES (NULL,'$ITEM_NAME', '$UNIT')";
       $result = mysqli_query($conn, $sql);
 
       if ($result) {
-         header("Location: ../index.php?store_msg=New Store Location record created successfully");
+         header("Location: ../index.php?inventory_item_msg=New Inventory Item record created successfully");
          exit();
       } else {
          echo "Failed: " . mysqli_error($conn);
@@ -44,28 +45,33 @@ if (isset($_POST["submit"])) {
    <!-- Font Awesome -->
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-   <title>Big Brew CRUD Application - Add Store Location</title>
+   <title>Big Brew CRUD Application - Add Inventory Item</title>
 </head>
 
 <body>
    <nav class="navbar navbar-light; justify-content-center fs-3 mb-5" style="background-color: #39393f">
-    <img src="../images/logo.png" width=150 height=130><p style="color: white; margin-left: 10px">Big Brew CRUD Application (Store Location)</p>
+    <img src="../images/logo.png" width=150 height=130><p style="color: white; margin-left: 10px">Big Brew CRUD Application (Inventory Item)</p>
   </nav>
 
    <div class="container">
       <div class="text-center mb-4">
-         <h3>Add New Store Location</h3>
-         <p class="text-muted">Complete the form below to add a new store location</p>
+         <h3>Add New Inventory Item</h3>
+         <p class="text-muted">Complete the form below to add a new inventory item</p>
       </div>
 
       <div class="container d-flex justify-content-center">
          <form action="" method="post" style="width:50vw; min-width:300px;">
-            
-            <div class="mb-3">
-               <label class="form-label">Location Name:</label>
-               <input type="text" class="form-control" name="LOC_NAME" placeholder="Makati">
-            </div>
+            <div class="row mb-3">
+               <div class="col">
+                  <label class="form-label">Item Name:</label>
+                  <input type="text" class="form-control" name="ITEM_NAME" placeholder="Milktea">
+               </div>
 
+               <div class="col">
+                  <label class="form-label">Unit(s):</label>
+                  <input type="number" class="form-control" name="UNIT" placeholder="1">
+               </div>
+            </div>
 
             <div>
                <button type="submit" class="btn btn-success" name="submit">Save</button>
