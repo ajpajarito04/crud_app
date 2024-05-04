@@ -23,3 +23,5 @@ create TABLE STORE_LOCATION (
 
 ### ****Copy files to htdocs folder****
 
+mango
+
