@@ -5,6 +5,16 @@ $id = $_GET["id"];
 $ITEM_NAME = '';
 $UNIT = '';
 
+// Fetch the existing inventory item record
+$fetch_sql = "SELECT * FROM INVENTORY_ITEM WHERE ITEM_ID = '$id'";
+$fetch_result = mysqli_query($conn, $fetch_sql);
+$row = mysqli_fetch_assoc($fetch_result);
+
+if ($row) {
+    $ITEM_NAME = $row['ITEM_NAME'];
+    $UNIT = $row['UNIT'];
+}
+
 if (isset($_POST["submit"])) {
    $id = $_GET["id"]; 
    $ITEM_NAME = $_POST['ITEM_NAME'];
@@ -30,8 +40,6 @@ if (isset($_POST["submit"])) {
 }
 
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -66,12 +74,12 @@ if (isset($_POST["submit"])) {
             <div class="row mb-3">
                <div class="col">
                   <label class="form-label">Item Name:</label>
-                  <input type="text" class="form-control" name="ITEM_NAME" placeholder="Milktea">
+                  <input type="text" class="form-control" name="ITEM_NAME" placeholder="Milktea" value="<?php echo $ITEM_NAME ?>">
                </div>
 
                <div class="col">
                   <label class="form-label">Unit(s):</label>
-                  <input type="number" class="form-control" name="UNIT" placeholder="1">
+                  <input type="number" class="form-control" name="UNIT" placeholder="1" value="<?php echo $UNIT ?>">
                </div>
             </div>
 
